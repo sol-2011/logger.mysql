@@ -1,12 +1,12 @@
 DROP PROCEDURE IF EXISTS insert_logline;
 DELIMITER //
-CREATE procedure insert_logline(host varchar(16), name varchar(256), stag varchar(50), facility tinyint unsigned, severity tinyint unsigned, msg text, tim varchar(50))
+CREATE PROCEDURE insert_logline(host varchar(16), name varchar(256), stag varchar(50), facility tinyint unsigned, severity tinyint unsigned, msg text, tim varchar(50))
 LANGUAGE SQL
 NOT DETERMINISTIC
 SQL SECURITY INVOKER
 COMMENT 'Insert logline with check device table'
 BEGIN
-  DECLARE devid integer unsigned default null;
+  DECLARE devid integer unsigned DEFAULT NULL;
 
   SELECT id INTO devid FROM devices WHERE ip = inet_aton(host);
 
@@ -23,7 +23,7 @@ DELIMITER ;
 
 DROP TABLE IF EXISTS logs;
 CREATE TABLE logs (
-    id integer unsigned not null AUTO_INCREMENT,
+    id integer unsigned NOT NULL AUTO_INCREMENT,
     `date` datetime DEFAULT current_timestamp() NOT NULL,
     device integer unsigned NOT NULL,
     logstring text NOT NULL,
@@ -46,7 +46,7 @@ CREATE TABLE devices (
 );
 
 
-alter table logs add foreign key (device) references devices (id);
+ALTER TABLE logs ADD FOREIGN KEY (device) REFERENCES devices (id);
 
 CREATE INDEX device_id_idx ON devices (id);
 
